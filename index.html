@@ -1,130 +1,116 @@
 <!DOCTYPE html>
 <html lang="nl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HBO Quiz | Ontdek jouw ICT-match</title>
-    <meta
-      name="description"
-      content="Een speelse demo-website voor een interactieve ICT-quiz met home, quiz en contactpagina."
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body data-page="home">
-    <div class="page-shell">
-      <header class="site-header glass-panel">
-        <a class="brand" href="index.html">
-          <span class="brand-mark">&lt;/&gt;</span>
-          <span>
-            <strong>HBO Quiz</strong>
-            <small>Vind jouw ICT-vibe</small>
-          </span>
-        </a>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBO-ICT Studiekeuze Quiz</title>
+    <link rel="stylesheet" href="style.css?v=20260330-1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
 
-        <button class="menu-toggle" type="button" aria-label="Open menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+    <!-- SVG squiggles taken from https://codepen.io/lbebber/pen/KwGEQv -->
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <filter id="squiggly-0">
+                <feTurbulence id="turbulence" baseFrequency="0.06" numOctaves="3" result="noise" seed="0"></feTurbulence>
+                <feDisplacementMap id="displacement" in="SourceGraphic" in2="noise" scale="6"></feDisplacementMap>
+            </filter>
+            <filter id="squiggly-1">
+                <feTurbulence id="turbulence" baseFrequency="0.06" numOctaves="3" result="noise" seed="1"></feTurbulence>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="8"></feDisplacementMap>
+            </filter>
+            <filter id="squiggly-2">
+                <feTurbulence id="turbulence" baseFrequency="0.06" numOctaves="3" result="noise" seed="2"></feTurbulence>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="6"></feDisplacementMap>
+            </filter>
+            <filter id="squiggly-3">
+                <feTurbulence id="turbulence" baseFrequency="0.06" numOctaves="3" result="noise" seed="3"></feTurbulence>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="8"></feDisplacementMap>
+            </filter>
+            <filter id="squiggly-4">
+                <feTurbulence id="turbulence" baseFrequency="0.06" numOctaves="3" result="noise" seed="4"></feTurbulence>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="6"></feDisplacementMap>
+            </filter>
+        </defs>
+    </svg>
 
-        <nav class="site-nav">
-          <a class="active" href="index.html">Home</a>
-          <a href="quiz.html">Quiz</a>
-          <a href="contact.html">Contact</a>
-        </nav>
-      </header>
+    <!-- Grain and vignette -->
+    <div class="overlay"></div>
 
-      <main>
-        <section class="hero section-grid">
-          <div class="hero-copy">
-            <span class="eyebrow">Interactief · Creatief · ICT</span>
-            <h1>Kies een ICT-richting die bij jouw energie past.</h1>
-            <p>
-              Deze demo laat zien hoe jouw website eruit kan zien: speels,
-              modern en uitnodigend. Later kan de echte opleiding-quiz hierop
-              worden aangesloten.
-            </p>
-            <div class="hero-actions">
-              <a class="button button-primary" href="quiz.html">Probeer de testquiz</a>
-              <a class="button button-secondary" href="contact.html">Neem contact op</a>
-            </div>
-            <ul class="hero-points">
-              <li>Snelle demo-quiz</li>
-              <li>Leuke animaties en hover-effecten</li>
-              <li>Volledig in het Nederlands</li>
-            </ul>
-          </div>
+    <!-- Main markup -->
 
-          <div class="hero-visual glass-panel floating-card-stack">
-            <div class="floating-card accent-card card-1">
-              <span class="chip">Nieuw</span>
-              <h2>Frontend</h2>
-              <p>Design, interactie en slimme gebruikerservaringen.</p>
-            </div>
-            <div class="floating-card card-2">
-              <h2>Data</h2>
-              <p>Analyseren, ontdekken en bouwen met informatie.</p>
-            </div>
-            <div class="floating-card card-3">
-              <h2>Security</h2>
-              <p>Beschermen, testen en digitaal veilig werken.</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="info-strip glass-panel">
-          <div>
-            <strong>Waarom deze stijl?</strong>
-            <p>
-              Omdat ICT niet saai hoeft te voelen. Een energieke look maakt de
-              website toegankelijker en leuker om te gebruiken.
-            </p>
-          </div>
-          <a class="button button-tertiary" href="quiz.html">Bekijk de demo</a>
-        </section>
-
-        <section class="section">
-          <div class="section-heading">
-            <span class="eyebrow">Wat je nu al ziet</span>
-            <h2>Een basis die later nóg interactiever kan worden.</h2>
-          </div>
-
-          <div class="feature-grid">
-            <article class="feature-card glass-panel">
-              <div class="feature-icon">⚡</div>
-              <h3>Snelle flow</h3>
-              <p>
-                Bezoekers zien meteen waar de website over gaat en worden snel
-                naar de quiz geleid.
-              </p>
-            </article>
-            <article class="feature-card glass-panel">
-              <div class="feature-icon">🎮</div>
-              <h3>Fun gevoel</h3>
-              <p>
-                Grote knoppen, speelse kaarten en lichte animaties zorgen voor
-                een interactieve uitstraling.
-              </p>
-            </article>
-            <article class="feature-card glass-panel">
-              <div class="feature-icon">💡</div>
-              <h3>Klaar voor uitbreiding</h3>
-              <p>
-                De testquiz kan later worden vervangen door vragen over echte
-                ICT-opleidingen.
-              </p>
-            </article>
-          </div>
-        </section>
-      </main>
+    <div class="options">
+        <div class="options_sf">
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/sfIcon2.png">
+        </div>
+        <div class="options_bg">
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/bgIcon2.png">
+        </div>
     </div>
 
-    <script src="script.js"></script>
-  </body>
+    <div class="main">
+        <div class="main_inner">
+            <div class="main_inner__loading">
+                <div class="bg">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/mars_sunburst.png">
+                </div>
+                <div class="loader">
+                    <div class="text">
+                        <div class="intro-line intro-line--main">HBO-ICT</div>
+                        <div class="intro-line intro-line--sub">Studiekeuze Quiz</div>
+                    </div>
+                    <p>
+                        <button>Klik om te beginnen</button>
+                    </p>
+                </div>
+            </div>
+            <div class="main_inner__modalOverlay"></div>
+            <div class="main_inner__modal"></div>
+            <div class="main_inner__modalContent">
+                <!-- Filled dynamically by JS -->
+            </div>
+
+            <!-- Pass the pen logo -->
+            <div class="main_inner__logo">
+                <a href="">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/vgqlogo.svg">
+                </a>
+            </div>
+
+            <!-- Question -->
+            <div class="main_inner__title">
+                <h1></h1>
+                <p>Klik op een antwoord of gebruik de cijfertoetsen</p>
+            </div>
+
+            <!-- Scene circle backdrop -->
+            <div class="main_inner__circle"></div>
+
+            <!-- Scene right or wrong feedback -->
+            <div class="main_inner__feedback"></div>
+
+            <!-- Scene answers, generated through JS -->
+            <div class="main_inner__answers"></div>
+
+            <!-- Quiz progress element -->
+            <div class="main_inner__breadcrumbs"></div>
+        </div>
+    </div>
+
+    <canvas class="grain"></canvas>
+
+    <style>
+        /* Staggered slide-in transitions for answer options 4 and 5 */
+        body .main_inner__answers .answer:nth-of-type(4) {
+            transition: text-indent 0.12s, left 0.2s 0.2857142857s, opacity 0.2s 0.2857142857s;
+        }
+        body .main_inner__answers .answer:nth-of-type(5) {
+            transition: text-indent 0.12s, left 0.2s 0.3571428571s, opacity 0.2s 0.3571428571s;
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js?v=20260330-1"></script>
+</body>
 </html>

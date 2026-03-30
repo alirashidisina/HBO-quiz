@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HBO-ICT Studiekeuze Quiz – De Haagse Hogeschool</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f4f6fa;
+      color: #1a1a2e;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      width: 100%;
+      max-width: 660px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      background: #0a3d6b;
+      padding: 1.75rem 2rem 1.5rem;
+      color: #fff;
+    }
+
+    .card-header .school {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #7fb3e0;
+      margin-bottom: 6px;
+    }
+
+    .card-header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .card-header p {
+      font-size: 13px;
+      color: #a8c8e8;
+    }
+
+    .progress-wrap {
+      padding: 1.25rem 2rem 0;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #6b7a99;
+      margin-bottom: 8px;
+    }
+
+    .progress-bg {
+      height: 5px;
+      background: #e8ecf4;
+      border-radius: 3px;
+    }
+
+    .progress-fill {
+      height: 5px;
+      background: #1a6dc5;
+      border-radius: 3px;
+      transition: width 0.4s ease;
+    }
+
+    .question-body {
+      padding: 1.5rem 2rem 2rem;
+    }
+
+    .q-text {
+      font-size: 17px;
+      font-weight: 600;
+      color: #0a1a3b;
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #f8fafd;
+      border: 1.5px solid #dce4f0;
+      border-radius: 12px;
+      padding: 13px 16px;
+      cursor: pointer;
+      text-align: left;
+      font-size: 14px;
+      color: #1a1a2e;
+      line-height: 1.5;
+      transition: border-color 0.15s, background 0.15s;
+      width: 100%;
+    }
+
+    .option-btn:hover {
+      border-color: #1a6dc5;
+      background: #eef4fc;
+    }
+
+    .option-btn.selected {
+      border-color: #1a6dc5;
+      background: #deeaf9;
+      color: #0a3d6b;
+    }
+
+    .option-letter {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #dce4f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: #6b7a99;
+      margin-top: 1px;
+    }
+
+    .option-btn.selected .option-letter {
+      background: #1a6dc5;
+      color: #fff;
+    }
+
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid #eef1f8;
+    }
+
+    .btn {
+      border-radius: 8px;
+      padding: 9px 22px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1.5px solid #dce4f0;
+      background: #fff;
+      color: #1a1a2e;
+      transition: background 0.15s;
+    }
+
+    .btn:hover { background: #f4f6fa; }
+    .btn:disabled { opacity: 0.35; cursor: default; }
+
+    .btn.primary {
+      background: #1a6dc5;
+      color: #fff;
+      border-color: #1a6dc5;
+    }
+
+    .btn.primary:hover { background: #0a3d6b; border-color: #0a3d6b; }
+    .btn.primary:disabled { background: #a0bde0; border-color: #a0bde0; }
+
+    /* ── Results ── */
+    .result-wrap { padding: 1.5rem 2rem 2rem; }
+
+    .result-intro {
+      font-size: 11px;
+      color: #6b7a99;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .result-headline {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0a1a3b;
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+
+    .result-headline span { color: #1a6dc5; }
+
+    .result-card {
+      background: #f8fafd;
+      border: 1.5px solid #dce4f0;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 10px;
+    }
+
+    .result-card.top { background: #fff; }
+
+    .result-card-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .result-track-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0a1a3b;
+    }
+
+    .result-track-code {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: 8px;
+    }
+
+    .result-pct {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .result-bar-bg {
+      height: 6px;
+      background: #e8ecf4;
+      border-radius: 3px;
+      margin-bottom: 8px;
+    }
+
+    .result-bar {
+      height: 6px;
+      border-radius: 3px;
+      width: 0;
+      transition: width 0.9s ease;
+    }
+
+    .result-desc {
+      font-size: 13px;
+      color: #4a5575;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .skills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .skill-badge {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .best-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .location-tag {
+      font-size: 12px;
+      color: #6b7a99;
+      margin-top: 6px;
+    }
+
+    .restart-btn {
+      display: block;
+      width: 100%;
+      margin-top: 1rem;
+      padding: 12px;
+      border: 1.5px solid #dce4f0;
+      border-radius: 10px;
+      background: #fff;
+      font-size: 14px;
+      color: #1a1a2e;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s;
+    }
+
+    .restart-btn:hover { background: #f4f6fa; }
+
+    .haagse-link {
+      display: block;
+      text-align: center;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #1a6dc5;
+      text-decoration: none;
+    }
+
+    .haagse-link:hover { text-decoration: underline; }
+
+    @media (max-width: 480px) {
+      .card-header, .progress-wrap, .question-body, .result-wrap {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <div class="school">De Haagse Hogeschool · HBO-ICT</div>
+    <h1>Welke ICT-richting past bij jou?</h1>
+    <p>Beantwoord 15 vragen en ontdek jouw beste differentiatie.</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<script>
+const questions = [
+  {
+    text: "Wat spreekt jou het meest aan als je aan ICT denkt?",
+    options: [
+      { text: "Slimme apps en software bouwen voor echte gebruikers", tags: ["se","id"] },
+      { text: "Bedrijven helpen met data en digitale processen", tags: ["bdm"] },
+      { text: "Systemen beveiligen en digitale dreigingen stoppen", tags: ["ism"] },
+      { text: "Netwerken, servers en cloud-infrastructuur beheren", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Welk vak op school vond je het leukst?",
+    options: [
+      { text: "Wiskunde of natuurkunde", tags: ["nse","ism"] },
+      { text: "Informatica of programmeren", tags: ["se","id"] },
+      { text: "Economie of management", tags: ["bdm"] },
+      { text: "Geen specifiek voorkeur — ik leer graag breed", tags: ["se","id","bdm","ism","nse"] }
+    ]
+  },
+  {
+    text: "Stel: je werkt bij een bedrijf. Wat zou jij het liefst doen?",
+    options: [
+      { text: "Een nieuwe app of website van begin tot eind bouwen", tags: ["se"] },
+      { text: "Creatieve digitale oplossingen bedenken en prototypen", tags: ["id"] },
+      { text: "Dashboards en data-analyses maken voor het management", tags: ["bdm"] },
+      { text: "De IT-beveiliging controleren en verbeteren", tags: ["ism"] },
+      { text: "De server- en netwerkinfrastructuur opzetten", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Hoe werk je het liefst?",
+    options: [
+      { text: "Creatief en zelfstandig aan innovatieve projecten", tags: ["id","se"] },
+      { text: "Analytisch, methodisch en goed gedocumenteerd", tags: ["bdm","ism"] },
+      { text: "Hands-on met technische systemen en hardware", tags: ["nse"] },
+      { text: "In een team met mix van business en techniek", tags: ["bdm","id"] }
+    ]
+  },
+  {
+    text: "Wat boeit jou het meest in de digitale wereld?",
+    options: [
+      { text: "Hoe software en applicaties worden gemaakt", tags: ["se"] },
+      { text: "Hoe technologie innovatie en start-ups aandrijft", tags: ["id"] },
+      { text: "Hoe bedrijven data gebruiken om slimmer te werken", tags: ["bdm"] },
+      { text: "Hoe hackers werken en hoe je ze stopt", tags: ["ism"] },
+      { text: "Hoe netwerken en cloudplatforms worden opgezet", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Welke term spreekt jou het meest aan?",
+    options: [
+      { text: "Full-stack developer", tags: ["se"] },
+      { text: "UX designer / innovation engineer", tags: ["id"] },
+      { text: "Business analist / data consultant", tags: ["bdm"] },
+      { text: "Ethical hacker / security officer", tags: ["ism"] },
+      { text: "Cloud / netwerk engineer", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Wat voor stage zou jij het liefst lopen?",
+    options: [
+      { text: "Bij een softwarebedrijf of tech-startup", tags: ["se","id"] },
+      { text: "Bij een groot bedrijf in de IT-afdeling of data-team", tags: ["bdm"] },
+      { text: "Bij een cybersecuritybedrijf of de overheid", tags: ["ism"] },
+      { text: "Bij een telecomprovider of cloudplatform", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Hoe kijk je aan tegen programmeren?",
+    options: [
+      { text: "Ik vind het super leuk — code schrijven is mijn ding", tags: ["se","nse"] },
+      { text: "Ik doe het wel, maar combineer het liever met design of ideeën", tags: ["id"] },
+      { text: "Ik begrijp de basis, maar ben meer gericht op processen", tags: ["bdm"] },
+      { text: "Ik gebruik het om beveiligingsproblemen op te sporen", tags: ["ism"] }
+    ]
+  },
+  {
+    text: "Welk scenario klinkt het spannendst voor jou?",
+    options: [
+      { text: "Een app lanceren die door duizenden mensen gebruikt wordt", tags: ["se"] },
+      { text: "Een innovatief product pitchen voor investeerders", tags: ["id"] },
+      { text: "Een bedrijf helpen 30% efficiënter werken via data", tags: ["bdm"] },
+      { text: "Een cyberaanval in realtime detecteren en stoppen", tags: ["ism"] },
+      { text: "De cloudmigratie van een heel bedrijf uitvoeren", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Wat is je houding tegenover wiskunde en logica?",
+    options: [
+      { text: "Ik hou van abstracte redeneerpatronen en algoritmen", tags: ["se","nse"] },
+      { text: "Ik gebruik het liefst statistiek en data-analyse", tags: ["bdm","ism"] },
+      { text: "Ik denk meer visueel en creatief dan wiskundig", tags: ["id"] },
+      { text: "Ik werk liever met processen dan berekeningen", tags: ["bdm"] }
+    ]
+  },
+  {
+    text: "Welke film of serie zou je het liefst kijken?",
+    options: [
+      { text: "Silicon Valley (apps bouwen, start-ups)", tags: ["se","id"] },
+      { text: "Mr. Robot (hackers, beveiliging)", tags: ["ism"] },
+      { text: "Moneyball (data en slimme beslissingen)", tags: ["bdm"] },
+      { text: "The IT Crowd (systeembeheer, netwerken)", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Wat motiveert jou het meest?",
+    options: [
+      { text: "Iets bouwen dat mensen echt helpt of verrast", tags: ["se","id"] },
+      { text: "Organisaties slimmer en efficiënter maken", tags: ["bdm"] },
+      { text: "Mensen en systemen beschermen tegen gevaar", tags: ["ism"] },
+      { text: "Technische infrastructuur stabiel en snel houden", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Hoe ga je om met een complex technisch probleem?",
+    options: [
+      { text: "Ik ga debuggen totdat ik de oorzaak vind in de code", tags: ["se"] },
+      { text: "Ik schets een creatieve oplossing en test die snel", tags: ["id"] },
+      { text: "Ik analyseer de data en processen eromheen", tags: ["bdm"] },
+      { text: "Ik doe een grondige security-analyse van het systeem", tags: ["ism"] },
+      { text: "Ik check de netwerklogs en systeemconfiguratie", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Wat vind je van samenwerken met echte bedrijven aan cases?",
+    options: [
+      { text: "Top — ik wil software bouwen voor echte klanten", tags: ["se"] },
+      { text: "Ja! Zeker als ik mijn eigen ideeën kan inbrengen", tags: ["id"] },
+      { text: "Graag, bij strategische of data-vraagstukken", tags: ["bdm"] },
+      { text: "Absoluut — beveiligingsprojecten klinken geweldig", tags: ["ism"] },
+      { text: "Zeker, netwerk- en systeemprojecten in de praktijk", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Wat wil je over 5 jaar gezegd kunnen hebben?",
+    options: [
+      { text: "Ik heb software gebouwd die echt door mensen gebruikt wordt", tags: ["se"] },
+      { text: "Ik heb een eigen product of startup gelanceerd", tags: ["id"] },
+      { text: "Ik help bedrijven groeien met data en digitale strategie", tags: ["bdm"] },
+      { text: "Ik bescherm kritieke systemen tegen cyberdreigingen", tags: ["ism"] },
+      { text: "Ik beheer de IT-infrastructuur van een grote organisatie", tags: ["nse"] }
+    ]
+  }
+];
+
+const tracks = {
+  se: {
+    code: "SE",
+    label: "Software Engineering",
+    location: "Locatie: Den Haag",
+    desc: "Je bouwt van A tot Z softwareapplicaties — van mobiele apps tot webplatformen. Programmeren, software-architectuur en agile werken staan centraal.",
+    color: "#1a6dc5",
+    bg: "#deeaf9",
+    textColor: "#0a3d6b",
+    barColor: "#1a6dc5",
+    skills: ["Java / Python", "Web development", "Agile/Scrum", "Software-architectuur"]
+  },
+  id: {
+    code: "ID",
+    label: "Innovative Development",
+    location: "Locatie: Zoetermeer",
+    desc: "Je combineert techniek met creativiteit en ondernemerschap. Je bedenkt en bouwt innovatieve digitale producten en diensten, van idee tot prototype.",
+    color: "#c17d10",
+    bg: "#fef0d6",
+    textColor: "#7a4200",
+    barColor: "#c17d10",
+    skills: ["Design thinking", "Prototyping", "Ondernemerschap", "UX & innovatie"]
+  },
+  bdm: {
+    code: "BDM",
+    label: "Business & Data Management",
+    location: "Locatie: Den Haag",
+    desc: "Je verbindt ICT met bedrijfskunde. Je analyseert data, optimaliseert processen en helpt organisaties slimmer werken met digitale technologie.",
+    color: "#217a3c",
+    bg: "#e2f4e8",
+    textColor: "#145226",
+    barColor: "#217a3c",
+    skills: ["Data-analyse", "SQL / Power BI", "Business processen", "IT-management"]
+  },
+  ism: {
+    code: "ISM",
+    label: "Information Security Management",
+    location: "Locatie: Zoetermeer",
+    desc: "Je bent de digitale bewaker. Je leert systemen ethisch te hacken, kwetsbaarheden op te sporen en beveiligingsbeleid te ontwerpen voor organisaties.",
+    color: "#c0392b",
+    bg: "#fde8e6",
+    textColor: "#7b1f1a",
+    barColor: "#c0392b",
+    skills: ["Ethical hacking", "Risicoanalyse", "Netwerkbeveiliging", "Forensics"]
+  },
+  nse: {
+    code: "NSE",
+    label: "Network & Systems Engineering",
+    location: "Locatie: Delft",
+    desc: "Je bouwt en beheert de technische ruggengraat van organisaties — netwerken, servers, cloudplatformen en embedded systemen.",
+    color: "#6b3fcb",
+    bg: "#ece5fb",
+    textColor: "#3d2080",
+    barColor: "#6b3fcb",
+    skills: ["Networking (Cisco)", "Linux / Windows Server", "Cloud (AWS/Azure)", "Systeembeheer"]
+  }
+};
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+
+function render() {
+  const app = document.getElementById('app');
+  current < questions.length ? renderQuestion(app) : renderResult(app);
+}
+
+function renderQuestion(app) {
+  const q = questions[current];
+  const letters = ['A','B','C','D','E'];
+  const pct = Math.round((current / questions.length) * 100);
+  app.innerHTML = `
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span>Vraag ${current + 1} van ${questions.length}</span>
+        <span>${pct}%</span>
+      </div>
+      <div class="progress-bg"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>
+    <div class="question-body">
+      <div class="q-text">${q.text}</div>
+      <div class="options">
+        ${q.options.map((o, i) => `
+          <button class="option-btn ${answers[current] === i ? 'selected' : ''}" onclick="selectOption(${i})">
+            <span class="option-letter">${letters[i]}</span>
+            <span>${o.text}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="nav-row">
+        <button class="btn" onclick="go(-1)" ${current === 0 ? 'disabled' : ''}>&#8592; Terug</button>
+        <button class="btn primary" onclick="go(1)" ${answers[current] === null ? 'disabled' : ''}>
+          ${current === questions.length - 1 ? 'Bekijk resultaat &#8594;' : 'Volgende &#8594;'}
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function selectOption(i) {
+  answers[current] = i;
+  render();
+}
+
+function go(dir) {
+  current = Math.max(0, Math.min(questions.length, current + dir));
+  render();
+}
+
+function calcScores() {
+  const scores = { se: 0, id: 0, bdm: 0, ism: 0, nse: 0 };
+  questions.forEach((q, qi) => {
+    const ai = answers[qi];
+    if (ai === null) return;
+    q.options[ai].tags.forEach(t => { scores[t] += 1; });
+  });
+  const total = Object.values(scores).reduce((a, b) => a + b, 0) || 1;
+  return { scores, total };
+}
+
+function renderResult(app) {
+  const { scores, total } = calcScores();
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const top = sorted[0][0];
+  const t = tracks[top];
+
+  const cardsHTML = sorted.map(([key, score], idx) => {
+    const tr = tracks[key];
+    const pct = Math.round((score / total) * 100);
+    const isTop = idx === 0;
+    return `
+      <div class="result-card ${isTop ? 'top' : ''}" style="${isTop ? 'border-color:' + tr.barColor : ''}">
+        ${isTop ? '<span class="best-badge" style="background:' + tr.bg + ';color:' + tr.textColor + '">Beste match</span>' : ''}
+        <div class="result-card-top-row">
+          <div style="display:flex;align-items:center;">
+            <span class="result-track-name">${tr.label}</span>
+            <span class="result-track-code" style="background:${tr.bg};color:${tr.textColor}">${tr.code}</span>
+          </div>
+          <span class="result-pct" style="color:${tr.barColor}">${pct}%</span>
+        </div>
+        <div class="result-bar-bg">
+          <div class="result-bar" id="bar-${key}" style="background:${tr.barColor}"></div>
+        </div>
+        <div class="location-tag">${tr.location}</div>
+        ${isTop ? `
+          <div class="result-desc" style="margin-top:8px;">${tr.desc}</div>
+          <div class="skills-row">
+            ${tr.skills.map(s => '<span class="skill-badge" style="background:' + tr.bg + ';color:' + tr.textColor + '">' + s + '</span>').join('')}
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="result-wrap">
+      <div class="result-intro">Jouw resultaat</div>
+      <div class="result-headline">Je past het best bij <span>${t.label} (${t.code})</span></div>
+      ${cardsHTML}
+      <button class="restart-btn" onclick="restart()">&#8635; Opnieuw beginnen</button>
+      <a class="haagse-link" href="https://www.dehaagsehogeschool.nl/opleidingen/hbo-bachelor/hbo-ict" target="_blank" rel="noopener">
+        Meer info over HBO-ICT op De Haagse Hogeschool &#8594;
+      </a>
+    </div>
+  `;
+
+  setTimeout(() => {
+    sorted.forEach(([key, score]) => {
+      const pct = Math.round((score / total) * 100);
+      const bar = document.getElementById('bar-' + key);
+      if (bar) bar.style.width = pct + '%';
+    });
+  }, 80);
+}
+
+function restart() {
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
