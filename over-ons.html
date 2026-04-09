@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Over ons – HBO-ICT Studiekeuze Quiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #818cf8;
+      --primary-dark: #3730a3;
+      --surface-solid: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: rgba(148,163,184,0.2);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+      --shadow-lg: 0 20px 48px rgba(79,70,229,0.12), 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #f8fafc;
+      color: var(--text-primary);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248,250,252,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-logo { font-size: 13px; font-weight: 700; color: var(--primary); letter-spacing: -0.02em; }
+    .nav-sep { color: var(--text-muted); font-size: 13px; }
+    .nav-page { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+
+    .nav-back {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--primary);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1.5px solid rgba(79,70,229,0.25);
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .nav-back:hover { background: rgba(79,70,229,0.06); border-color: var(--primary); }
+    .nav-back svg { width: 14px; height: 14px; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #1d4ed8 100%);
+      padding: 72px 2rem 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(99,102,241,0.4) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(6,182,212,0.25) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #a5b4fc;
+      margin-bottom: 20px;
+    }
+    .hero-label::before { content: ''; display: block; width: 20px; height: 1.5px; background: #a5b4fc; }
+
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 18px;
+    }
+    .hero h1 span {
+      background: linear-gradient(90deg, #a5b4fc, #67e8f9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub { font-size: 17px; color: #c7d2fe; max-width: 520px; line-height: 1.65; font-weight: 400; }
+
+    /* ── LAYOUT ── */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 56px 2rem 80px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .left-col { display: flex; flex-direction: column; gap: 32px; }
+
+    .section-card {
+      background: var(--surface-solid);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+    .section-card-header { padding: 24px 28px 0; }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary);
+      background: rgba(79,70,229,0.08);
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+    .section-card h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); margin-bottom: 4px; }
+
+    .section-card-body { padding: 16px 28px 28px; }
+    .section-card-body p { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 12px; }
+    .section-card-body p:last-child { margin-bottom: 0; }
+
+    /* ── TRACKS ── */
+    .tracks-list { padding: 4px 28px 28px; display: flex; flex-direction: column; gap: 2px; }
+
+    .track-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      border-radius: 14px;
+      transition: background 0.15s;
+    }
+    .track-item:hover { background: #f8fafc; }
+
+    .track-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .track-item-body { flex: 1; min-width: 0; }
+    .track-item-body h3 { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+    .track-item-body p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; margin: 0; }
+    .track-loc { font-size: 11px; color: var(--text-muted); white-space: nowrap; flex-shrink: 0; }
+
+    /* ── SIDEBAR ── */
+    .right-col { display: flex; flex-direction: column; gap: 20px; }
+
+    .sidebar-card {
+      background: var(--surface-solid);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      padding: 24px;
+    }
+    .sidebar-card h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 16px; }
+
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat { background: #f8fafc; border-radius: 12px; padding: 14px; text-align: center; }
+    .stat-number { font-size: 28px; font-weight: 800; letter-spacing: -0.04em; color: var(--primary); line-height: 1; margin-bottom: 4px; }
+    .stat-label { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+
+    .contact-item { display: flex; align-items: center; gap: 12px; }
+    .contact-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: rgba(79,70,229,0.08);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-icon svg { width: 16px; height: 16px; color: var(--primary); }
+    .contact-item-body p { font-size: 12px; color: var(--text-muted); margin-bottom: 2px; }
+    .contact-item-body a { font-size: 13.5px; font-weight: 600; color: var(--primary); text-decoration: none; }
+    .contact-item-body a:hover { text-decoration: underline; }
+
+    .cta-card {
+      background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-card::before {
+      content: '';
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+    .cta-card h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 8px; position: relative; }
+    .cta-card p { font-size: 13px; color: #c7d2fe; line-height: 1.6; margin-bottom: 20px; position: relative; }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s;
+      position: relative;
+    }
+    .cta-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+    .cta-btn svg { width: 14px; height: 14px; }
+
+    /* ── TEAM SECTION ── */
+    .team-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 80px;
+    }
+
+    .team-section-header {
+      margin-bottom: 32px;
+    }
+
+    .team-section-header .section-tag { margin-bottom: 12px; }
+
+    .team-section-header h2 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .team-card {
+      background: var(--surface-solid);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      padding: 32px 24px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .team-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .team-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 16px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .team-avatar svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .team-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .team-email {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 20px;
+      word-break: break-all;
+    }
+    .team-email:hover { color: var(--primary); }
+
+    .team-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 20px;
+    }
+
+    .team-roles {
+      list-style: none;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .team-roles li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+    }
+
+    .role-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 820px) {
+      main { grid-template-columns: 1fr; padding: 40px 1.25rem 60px; }
+      .right-col { order: -1; }
+      .stat-grid { grid-template-columns: repeat(4, 1fr); }
+      .team-grid { grid-template-columns: 1fr; }
+      .team-section { padding-left: 1.25rem; padding-right: 1.25rem; }
+    }
+    @media (max-width: 520px) {
+      .hero { padding: 52px 1.25rem 60px; }
+      .section-card-header, .section-card-body, .tracks-list { padding-left: 20px; padding-right: 20px; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      .team-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">HBO-ICT Quiz</span>
+    <span class="nav-sep">/</span>
+    <span class="nav-page">Over ons</span>
+    <a href="index.html" class="nav-back">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+      </svg>
+      Terug
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">HBO-ICT Studiekeuze</div>
+    <h1>Over <span>ons</span></h1>
+    <p class="hero-sub">Wie zijn wij en wat is het doel van deze quiz? Ontdek hoe wij jou helpen de juiste ICT-richting te kiezen.</p>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main>
+  <div class="left-col">
+
+    <!-- About quiz -->
+    <div class="section-card">
+      <div class="section-card-header">
+        <div class="section-tag">Over de quiz</div>
+        <h2>Wat doet deze quiz?</h2>
+      </div>
+      <div class="section-card-body">
+        <p>De HBO-ICT Studiekeuze Quiz helpt aankomende studenten ontdekken welke ICT-differentiatie het beste bij hen past. Door 15 gerichte vragen te beantwoorden krijg je een persoonlijk profiel dat jouw interesses en sterke kanten koppelt aan één van de vijf HBO-ICT richtingen.</p>
+        <p>De quiz is ontwikkeld als hulpmiddel bij de studiekeuze en geeft een indicatie op basis van jouw antwoorden. Het resultaat is geen bindend advies, maar een startpunt voor verdere verkenning.</p>
+      </div>
+    </div>
+
+    <!-- Tracks -->
+    <div class="section-card">
+      <div class="section-card-header">
+        <div class="section-tag">Richtingen</div>
+        <h2>De vijf HBO-ICT richtingen</h2>
+      </div>
+      <div class="tracks-list">
+
+        <div class="track-item">
+          <div class="track-icon" style="background:#e0e7ff;color:#3730a3">SE</div>
+          <div class="track-item-body">
+            <h3>Software Engineering</h3>
+            <p>Bouwen van softwareapplicaties — van mobiele apps tot webplatformen. Focus op programmeren, software-architectuur en agile werken.</p>
+          </div>
+          <span class="track-loc">📍 Den Haag</span>
+        </div>
+
+        <div class="track-item">
+          <div class="track-icon" style="background:#fef3c7;color:#92400e">ID</div>
+          <div class="track-item-body">
+            <h3>Innovative Development</h3>
+            <p>Techniek combineren met creativiteit en ondernemerschap. Van idee naar innovatief digitaal product of dienst.</p>
+          </div>
+          <span class="track-loc">📍 Zoetermeer</span>
+        </div>
+
+        <div class="track-item">
+          <div class="track-icon" style="background:#d1fae5;color:#065f46">BDM</div>
+          <div class="track-item-body">
+            <h3>Business &amp; Data Management</h3>
+            <p>ICT verbinden met bedrijfskunde. Data analyseren, processen optimaliseren en organisaties slimmer laten werken.</p>
+          </div>
+          <span class="track-loc">📍 Den Haag</span>
+        </div>
+
+        <div class="track-item">
+          <div class="track-icon" style="background:#fee2e2;color:#991b1b">ISM</div>
+          <div class="track-item-body">
+            <h3>Information Security Management</h3>
+            <p>Systemen ethisch hacken, kwetsbaarheden opsporen en beveiligingsbeleid ontwerpen voor organisaties.</p>
+          </div>
+          <span class="track-loc">📍 Zoetermeer</span>
+        </div>
+
+        <div class="track-item">
+          <div class="track-icon" style="background:#ede9fe;color:#4c1d95">NSE</div>
+          <div class="track-item-body">
+            <h3>Network &amp; Systems Engineering</h3>
+            <p>De technische ruggengraat van organisaties bouwen en beheren — netwerken, servers en cloudplatformen.</p>
+          </div>
+          <span class="track-loc">📍 Delft</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /left-col -->
+
+  <div class="right-col">
+
+    <!-- Stats -->
+    <div class="sidebar-card">
+      <h3>Quiz in cijfers</h3>
+      <div class="stat-grid">
+        <div class="stat"><div class="stat-number">15</div><div class="stat-label">Vragen</div></div>
+        <div class="stat"><div class="stat-number">5</div><div class="stat-label">Richtingen</div></div>
+        <div class="stat"><div class="stat-number">3</div><div class="stat-label">Locaties</div></div>
+        <div class="stat"><div class="stat-number">4</div><div class="stat-label">Jaar studie</div></div>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="sidebar-card">
+      <h3>Contact</h3>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="contact-item-body">
+            <p>Ali Rashidi</p>
+            <a href="mailto:ali@rashidi.nl">ali@rashidi.nl</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="contact-item-body">
+            <p>Amina Ozdojeva</p>
+            <a href="mailto:302784377@student.rocmondriaan.nl">302784377@student.rocmondriaan.nl</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="contact-item-body">
+            <p>Eslam Al-Sufyani</p>
+            <a href="mailto:302235427@student.rocmondriaan.nl">302235427@student.rocmondriaan.nl</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-card">
+      <h3>Klaar om te beginnen?</h3>
+      <p>Doe de quiz en ontdek in 5 minuten welke HBO-ICT richting bij jou past.</p>
+      <a href="index.html" class="cta-btn">
+        Start de quiz
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+
+  </div><!-- /right-col -->
+</main>
+
+<!-- TEAM -->
+<section class="team-section">
+  <div class="team-section-header">
+    <div class="section-tag">Team &amp; Rollen</div>
+    <h2>Wie hebben dit gemaakt?</h2>
+  </div>
+
+  <div class="team-grid">
+
+    <!-- Ali Rashidi -->
+    <div class="team-card">
+      <!-- male avatar: Ali -->
+      <div class="team-avatar">
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#dbeafe"/>
+          <!-- body -->
+          <path d="M14 78 C14 62 24 54 40 54 C56 54 66 62 66 78Z" fill="#1e40af"/>
+          <!-- head -->
+          <circle cx="40" cy="30" r="14" fill="#93c5fd"/>
+          <!-- short hair top -->
+          <path d="M26 26 C26 14 54 14 54 26 C54 20 48 16 40 16 C32 16 26 20 26 26Z" fill="#1e3a8a"/>
+          <!-- ears -->
+          <ellipse cx="26" cy="30" rx="3" ry="4" fill="#93c5fd"/>
+          <ellipse cx="54" cy="30" rx="3" ry="4" fill="#93c5fd"/>
+          <!-- face details -->
+          <ellipse cx="35" cy="31" rx="2" ry="2.5" fill="#1e40af" opacity="0.5"/>
+          <ellipse cx="45" cy="31" rx="2" ry="2.5" fill="#1e40af" opacity="0.5"/>
+          <path d="M36 38 Q40 41 44 38" stroke="#1e40af" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="team-name">Ali Rashidi</div>
+      <a href="mailto:ali@rashidi.nl" class="team-email">ali@rashidi.nl</a>
+      <div class="team-divider"></div>
+      <ul class="team-roles">
+        <li><span class="role-dot" style="background:#3b82f6"></span>LAMP-stack installatie</li>
+        <li><span class="role-dot" style="background:#3b82f6"></span>Serverbeheer &amp; logs</li>
+        <li><span class="role-dot" style="background:#3b82f6"></span>Beveiliging opzetten</li>
+      </ul>
+    </div>
+
+    <!-- Amina Ozdojeva -->
+    <div class="team-card">
+      <!-- female avatar: Amina -->
+      <div class="team-avatar">
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#fef3c7"/>
+          <!-- body -->
+          <path d="M12 78 C12 61 23 53 40 53 C57 53 68 61 68 78Z" fill="#d97706"/>
+          <!-- long hair back -->
+          <path d="M24 28 C22 18 24 10 40 10 C56 10 58 18 56 28 C56 46 52 52 52 52 L28 52 C28 52 24 46 24 28Z" fill="#92400e"/>
+          <!-- head -->
+          <circle cx="40" cy="30" r="13" fill="#fcd34d"/>
+          <!-- ears -->
+          <ellipse cx="27" cy="30" rx="3" ry="4" fill="#fcd34d"/>
+          <ellipse cx="53" cy="30" rx="3" ry="4" fill="#fcd34d"/>
+          <!-- hair top over head -->
+          <path d="M27 22 C27 14 53 14 53 22 C53 18 47 14 40 14 C33 14 27 18 27 22Z" fill="#92400e"/>
+          <!-- face details -->
+          <ellipse cx="35.5" cy="30" rx="2" ry="2.5" fill="#b45309" opacity="0.5"/>
+          <ellipse cx="44.5" cy="30" rx="2" ry="2.5" fill="#b45309" opacity="0.5"/>
+          <path d="M36 37 Q40 40 44 37" stroke="#b45309" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="team-name">Amina Ozdojeva</div>
+      <a href="mailto:302784377@student.rocmondriaan.nl" class="team-email">302784377@student.rocmondriaan.nl</a>
+      <div class="team-divider"></div>
+      <ul class="team-roles">
+        <li><span class="role-dot" style="background:#f59e0b"></span>Front-end ontwerp</li>
+        <li><span class="role-dot" style="background:#f59e0b"></span>Website stijl</li>
+        <li><span class="role-dot" style="background:#f59e0b"></span>Demo presentatie</li>
+        <li><span class="role-dot" style="background:#f59e0b"></span>Code review</li>
+      </ul>
+    </div>
+
+    <!-- Eslam Al-Sufyani -->
+    <div class="team-card">
+      <!-- female avatar: Eslam -->
+      <div class="team-avatar">
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="40" fill="#d1fae5"/>
+          <!-- body -->
+          <path d="M12 78 C12 61 23 53 40 53 C57 53 68 61 68 78Z" fill="#059669"/>
+          <!-- long hair back -->
+          <path d="M24 28 C22 18 24 10 40 10 C56 10 58 18 56 28 C56 46 52 52 52 52 L28 52 C28 52 24 46 24 28Z" fill="#065f46"/>
+          <!-- head -->
+          <circle cx="40" cy="30" r="13" fill="#6ee7b7"/>
+          <!-- ears -->
+          <ellipse cx="27" cy="30" rx="3" ry="4" fill="#6ee7b7"/>
+          <ellipse cx="53" cy="30" rx="3" ry="4" fill="#6ee7b7"/>
+          <!-- hair top over head -->
+          <path d="M27 22 C27 14 53 14 53 22 C53 18 47 14 40 14 C33 14 27 18 27 22Z" fill="#065f46"/>
+          <!-- face details -->
+          <ellipse cx="35.5" cy="30" rx="2" ry="2.5" fill="#065f46" opacity="0.5"/>
+          <ellipse cx="44.5" cy="30" rx="2" ry="2.5" fill="#065f46" opacity="0.5"/>
+          <path d="M36 37 Q40 40 44 37" stroke="#065f46" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="team-name">Eslam Al-Sufyani</div>
+      <a href="mailto:302235427@student.rocmondriaan.nl" class="team-email">302235427@student.rocmondriaan.nl</a>
+      <div class="team-divider"></div>
+      <ul class="team-roles">
+        <li><span class="role-dot" style="background:#10b981"></span>Front-end ontwerp</li>
+        <li><span class="role-dot" style="background:#10b981"></span>Demo presentatie</li>
+        <li><span class="role-dot" style="background:#10b981"></span>Definitief design</li>
+        <li><span class="role-dot" style="background:#10b981"></span>Code review</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>

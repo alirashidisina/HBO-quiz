@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HBO-ICT Studiekeuze Quiz – De Haagse Hogeschool</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f4f6fa;
+      color: #1a1a2e;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      width: 100%;
+      max-width: 660px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      background: #0a3d6b;
+      padding: 1.75rem 2rem 1.5rem;
+      color: #fff;
+    }
+
+    .card-header .school {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #7fb3e0;
+      margin-bottom: 6px;
+    }
+
+    .card-header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .card-header p {
+      font-size: 13px;
+      color: #a8c8e8;
+    }
+
+    .progress-wrap {
+      padding: 1.25rem 2rem 0;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #6b7a99;
+      margin-bottom: 8px;
+    }
+
+    .progress-bg {
+      height: 5px;
+      background: #e8ecf4;
+      border-radius: 3px;
+    }
+
+    .progress-fill {
+      height: 5px;
+      background: #1a6dc5;
+      border-radius: 3px;
+      transition: width 0.4s ease;
+    }
+
+    .question-body {
+      padding: 1.5rem 2rem 2rem;
+    }
+
+    .q-text {
+      font-size: 17px;
+      font-weight: 600;
+      color: #0a1a3b;
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #f8fafd;
+      border: 1.5px solid #dce4f0;
+      border-radius: 12px;
+      padding: 13px 16px;
+      cursor: pointer;
+      text-align: left;
+      font-size: 14px;
+      color: #1a1a2e;
+      line-height: 1.5;
+      transition: border-color 0.15s, background 0.15s;
+      width: 100%;
+    }
+
+    .option-btn:hover {
+      border-color: #1a6dc5;
+      background: #eef4fc;
+    }
+
+    .option-btn.selected {
+      border-color: #1a6dc5;
+      background: #deeaf9;
+      color: #0a3d6b;
+    }
+
+    .option-letter {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #dce4f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: #6b7a99;
+      margin-top: 1px;
+    }
+
+    .option-btn.selected .option-letter {
+      background: #1a6dc5;
+      color: #fff;
+    }
+
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid #eef1f8;
+    }
+
+    .btn {
+      border-radius: 8px;
+      padding: 9px 22px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1.5px solid #dce4f0;
+      background: #fff;
+      color: #1a1a2e;
+      transition: background 0.15s;
+    }
+
+    .btn:hover { background: #f4f6fa; }
+    .btn:disabled { opacity: 0.35; cursor: default; }
+
+    .btn.primary {
+      background: #1a6dc5;
+      color: #fff;
+      border-color: #1a6dc5;
+    }
+
+    .btn.primary:hover { background: #0a3d6b; border-color: #0a3d6b; }
+    .btn.primary:disabled { background: #a0bde0; border-color: #a0bde0; }
+
+    /* ── Name screen ── */
+    .name-wrap {
+      padding: 2rem;
+    }
+
+    .name-wrap h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #0a1a3b;
+      margin-bottom: 6px;
+    }
+
+    .name-wrap p {
+      font-size: 13px;
+      color: #6b7a99;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .name-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .name-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .name-field label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7a99;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .name-field input {
+      padding: 10px 14px;
+      border: 1.5px solid #dce4f0;
+      border-radius: 10px;
+      font-size: 15px;
+      color: #1a1a2e;
+      outline: none;
+      transition: border-color 0.15s;
+      font-family: inherit;
+    }
+
+    .name-field input:focus {
+      border-color: #1a6dc5;
+    }
+
+    .name-field input::placeholder {
+      color: #b0bcd4;
+    }
+
+    .name-field input.input-error {
+      border-color: #c0392b;
+    }
+
+    .field-error {
+      font-size: 11px;
+      color: #c0392b;
+      min-height: 16px;
+    }
+
+    /* ── Results ── */
+    .result-wrap { padding: 1.5rem 2rem 2rem; }
+
+    .result-intro {
+      font-size: 11px;
+      color: #6b7a99;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .result-headline {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0a1a3b;
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+
+    .result-headline span { color: #1a6dc5; }
+
+    .result-card {
+      background: #f8fafd;
+      border: 1.5px solid #dce4f0;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 10px;
+    }
+
+    .result-card.top { background: #fff; }
+
+    .result-card-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .result-track-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0a1a3b;
+    }
+
+    .result-track-code {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: 8px;
+    }
+
+    .result-pct {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .result-bar-bg {
+      height: 6px;
+      background: #e8ecf4;
+      border-radius: 3px;
+      margin-bottom: 8px;
+    }
+
+    .result-bar {
+      height: 6px;
+      border-radius: 3px;
+      width: 0;
+      transition: width 0.9s ease;
+    }
+
+    .result-desc {
+      font-size: 13px;
+      color: #4a5575;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .skills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .skill-badge {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .best-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .location-tag {
+      font-size: 12px;
+      color: #6b7a99;
+      margin-top: 6px;
+    }
+
+    .download-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border: 1.5px solid #1a6dc5;
+      border-radius: 10px;
+      background: #1a6dc5;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .download-btn:hover { background: #0a3d6b; border-color: #0a3d6b; }
+
+    .restart-btn {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border: 1.5px solid #dce4f0;
+      border-radius: 10px;
+      background: #fff;
+      font-size: 14px;
+      color: #1a1a2e;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s;
+    }
+
+    .restart-btn:hover { background: #f4f6fa; }
+
+    .haagse-link {
+      display: block;
+      text-align: center;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #1a6dc5;
+      text-decoration: none;
+    }
+
+    .haagse-link:hover { text-decoration: underline; }
+
+    /* ── Print / PDF rapport ── */
+    #rapport-page { display: none; }
+
+    @media print {
+      body {
+        background: #fff !important;
+        padding: 0 !important;
+        display: block !important;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        color: #1a1a2e;
+      }
+
+      #quiz-card { display: none !important; }
+
+      #rapport-page { display: block !important; }
+
+      @page {
+        size: A4;
+        margin: 18mm 18mm;
+      }
+    }
+
+    /* Rapport layout */
+    .rp-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      border-bottom: 3px solid #0a3d6b;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+
+    .rp-header-left h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0a3d6b;
+      margin-bottom: 2px;
+    }
+
+    .rp-header-left p {
+      font-size: 11px;
+      color: #6b7a99;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .rp-header-right {
+      text-align: right;
+      font-size: 11px;
+      color: #6b7a99;
+      line-height: 1.7;
+    }
+
+    .rp-student-box {
+      background: #f4f6fa;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    .rp-field label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #6b7a99;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .rp-field span {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0a1a3b;
+    }
+
+    .rp-section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0a3d6b;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 1.5px solid #dce4f0;
+    }
+
+    .rp-best-box {
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 18px;
+      color: #fff;
+    }
+
+    .rp-best-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.85;
+      margin-bottom: 4px;
+    }
+
+    .rp-best-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .rp-best-desc {
+      font-size: 12px;
+      opacity: 0.9;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .rp-best-meta {
+      font-size: 11px;
+      opacity: 0.8;
+    }
+
+    .rp-skills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .rp-skill-badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.22);
+      color: #fff;
+    }
+
+    .rp-scores-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      font-size: 13px;
+    }
+
+    .rp-scores-table th {
+      background: #0a3d6b;
+      color: #fff;
+      padding: 8px 12px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .rp-scores-table td {
+      padding: 9px 12px;
+      border-bottom: 1px solid #eef1f8;
+      vertical-align: middle;
+    }
+
+    .rp-scores-table tr:last-child td { border-bottom: none; }
+    .rp-scores-table tr:nth-child(even) td { background: #f8fafd; }
+
+    .rp-code-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-right: 6px;
+    }
+
+    .rp-bar-bg {
+      height: 8px;
+      background: #e8ecf4;
+      border-radius: 4px;
+      overflow: hidden;
+      width: 150px;
+    }
+
+    .rp-bar-fill {
+      height: 8px;
+      border-radius: 4px;
+    }
+
+    .rp-answers-section {
+      page-break-before: always;
+    }
+
+    .rp-answers-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+
+    .rp-answers-table th {
+      background: #0a3d6b;
+      color: #fff;
+      padding: 7px 10px;
+      text-align: left;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 10px;
+    }
+
+    .rp-answers-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #eef1f8;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .rp-answers-table tr:nth-child(even) td { background: #f8fafd; }
+
+    .rp-footer {
+      margin-top: 24px;
+      padding-top: 10px;
+      border-top: 1px solid #dce4f0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #9ba8c4;
+    }
+
+    @media (max-width: 480px) {
+      .card-header, .progress-wrap, .question-body, .result-wrap, .name-wrap {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+      }
+      .name-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Rapport page (hidden on screen, shown only when printing) -->
+<div id="rapport-page"></div>
+
+<div id="quiz-card" class="card">
+  <div class="card-header">
+    <div class="school">De Haagse Hogeschool · HBO-ICT</div>
+    <h1>Welke ICT-richting past bij jou?</h1>
+    <p>Beantwoord 15 vragen en ontdek jouw beste differentiatie.</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<script>
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+const questions = [
+  {
+    text: "Wat zou jij als eerste aanpakken bij een nieuw ICT-project?",
+    options: [
+      { text: "De technische architectuur uitstippelen en beginnen met coderen", tags: ["se"] },
+      { text: "Brainstormen over het concept en de gebruikersbeleving", tags: ["id"] },
+      { text: "De bedrijfsdoelen en databehoefte in kaart brengen", tags: ["bdm"] },
+      { text: "De beveiligingseisen en risico's doorlichten", tags: ["ism"] },
+      { text: "De serveromgeving en netwerkvereisten bepalen", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Welke workshop zou jij het liefst bijwonen?",
+    options: [
+      { text: "Full-stack webontwikkeling met React en Node.js", tags: ["se"] },
+      { text: "Design thinking: van idee naar klikbaar prototype", tags: ["id"] },
+      { text: "Data-analyse en visualisatie met Power BI en Python", tags: ["bdm"] },
+      { text: "Ethical hacking: je eerste penetratietest uitvoeren", tags: ["ism"] },
+      { text: "Netwerken met Cisco: routing en switching in de praktijk", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Stel: je werkt bij een bedrijf. Wat doe jij het liefst?",
+    options: [
+      { text: "Een nieuwe app of website van begin tot eind bouwen", tags: ["se"] },
+      { text: "Creatieve digitale oplossingen bedenken en prototypen", tags: ["id"] },
+      { text: "Dashboards en data-analyses maken voor het management", tags: ["bdm"] },
+      { text: "De IT-beveiliging controleren en verbeteren", tags: ["ism"] },
+      { text: "De server- en netwerkinfrastructuur opzetten", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Hoe werk je het liefst?",
+    options: [
+      { text: "Gestructureerd code schrijven en stap voor stap problemen oplossen", tags: ["se"] },
+      { text: "Creatief brainstormen en snel prototypes uitwerken", tags: ["id"] },
+      { text: "Analytisch en methodisch, met oog voor processen en data", tags: ["bdm"] },
+      { text: "Systematisch risico's en kwetsbaarheden in kaart brengen", tags: ["ism"] },
+      { text: "Hands-on aan servers, netwerken en infrastructuur sleutelen", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Welke technische uitdaging prikkelt jou het meest?",
+    options: [
+      { text: "Een complexe bug oplossen in een groot softwaresysteem", tags: ["se"] },
+      { text: "Een product bedenken dat de markt nog niet kent", tags: ["id"] },
+      { text: "Verborgen patronen ontdekken in een enorme dataset", tags: ["bdm"] },
+      { text: "De zwakste schakel vinden in een beveiligd netwerk", tags: ["ism"] },
+      { text: "Een schaalbare cloud-infrastructuur opzetten voor duizenden gebruikers", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Welke term spreekt jou het meest aan?",
+    options: [
+      { text: "Full-stack developer", tags: ["se"] },
+      { text: "UX designer / innovation engineer", tags: ["id"] },
+      { text: "Business analist / data consultant", tags: ["bdm"] },
+      { text: "Ethical hacker / security officer", tags: ["ism"] },
+      { text: "Cloud / netwerk engineer", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Wat voor stage zou jij het liefst lopen?",
+    options: [
+      { text: "Bij een softwarebedrijf als junior developer", tags: ["se"] },
+      { text: "Bij een tech-startup als innovatie- of productmedewerker", tags: ["id"] },
+      { text: "Bij een groot bedrijf in de IT-afdeling of data-team", tags: ["bdm"] },
+      { text: "Bij een cybersecuritybedrijf of de overheid", tags: ["ism"] },
+      { text: "Bij een telecomprovider of cloudprovider", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Hoe kijk je aan tegen programmeren?",
+    options: [
+      { text: "Super leuk — softwareontwikkeling is precies wat ik wil doen", tags: ["se"] },
+      { text: "Leuk hulpmiddel, maar ik combineer het liever met design", tags: ["id"] },
+      { text: "Nuttig voor data-analyse, maar strategie en processen zijn mijn focus", tags: ["bdm"] },
+      { text: "Essentieel om aanvallen en kwetsbaarheden te begrijpen", tags: ["ism"] },
+      { text: "Handig voor automatisering, maar infrastructuur is mijn focus", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Welk scenario klinkt het spannendst voor jou?",
+    options: [
+      { text: "Een app lanceren die door duizenden mensen gebruikt wordt", tags: ["se"] },
+      { text: "Een innovatief product pitchen voor investeerders", tags: ["id"] },
+      { text: "Een bedrijf helpen 30% efficiënter werken via data", tags: ["bdm"] },
+      { text: "Een cyberaanval in realtime detecteren en stoppen", tags: ["ism"] },
+      { text: "De cloudmigratie van een heel bedrijf uitvoeren", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Wat is je houding tegenover wiskunde en logica?",
+    options: [
+      { text: "Ik hou van algoritmen en logisch redeneren — de basis van goede code", tags: ["se"] },
+      { text: "Ik denk meer visueel en creatief; wiskunde is niet mijn sterkste kant", tags: ["id"] },
+      { text: "Statistiek en data-analyse liggen me goed", tags: ["bdm"] },
+      { text: "Ik gebruik logica om beveiligingsproblemen systematisch aan te pakken", tags: ["ism"] },
+      { text: "Ik hou van netwerkcalculaties en binaire logica voor infrastructuur", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Je hebt een vrije studiemiddag. Wat doe je het liefst?",
+    options: [
+      { text: "Een eigen app of tool bouwen als hobbyproject", tags: ["se"] },
+      { text: "Een creatief concept uitwerken en prototypen", tags: ["id"] },
+      { text: "Een dataset analyseren en visualiseren in een dashboard", tags: ["bdm"] },
+      { text: "Een CTF-challenge (capture the flag) oplossen", tags: ["ism"] },
+      { text: "Thuis een eigen server of thuisnetwerk opzetten", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Wat motiveert jou het meest?",
+    options: [
+      { text: "Werkende software bouwen die mensen dagelijks gebruiken", tags: ["se"] },
+      { text: "Innovatieve producten bedenken die iets écht veranderen", tags: ["id"] },
+      { text: "Organisaties slimmer en efficiënter maken met data en strategie", tags: ["bdm"] },
+      { text: "Mensen en systemen beschermen tegen digitale dreigingen", tags: ["ism"] },
+      { text: "Een stabiele, snelle en betrouwbare IT-infrastructuur neerzetten", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Hoe ga je om met een complex technisch probleem?",
+    options: [
+      { text: "Ik ga debuggen totdat ik de oorzaak vind in de code", tags: ["se"] },
+      { text: "Ik schets een creatieve oplossing en test die snel", tags: ["id"] },
+      { text: "Ik analyseer de data en processen eromheen", tags: ["bdm"] },
+      { text: "Ik doe een grondige security-analyse van het systeem", tags: ["ism"] },
+      { text: "Ik check de netwerklogs en systeemconfiguratie", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Wat vind je van samenwerken met echte bedrijven aan cases?",
+    options: [
+      { text: "Top — ik wil software bouwen voor echte klanten", tags: ["se"] },
+      { text: "Ja! Zeker als ik mijn eigen ideeën kan inbrengen", tags: ["id"] },
+      { text: "Graag, bij strategische of data-vraagstukken", tags: ["bdm"] },
+      { text: "Absoluut — beveiligingsprojecten klinken geweldig", tags: ["ism"] },
+      { text: "Zeker, netwerk- en systeemprojecten in de praktijk", tags: ["nse"] }
+    ]
+  },
+  {
+    text: "Wat wil je over 5 jaar gezegd kunnen hebben?",
+    options: [
+      { text: "Ik heb software gebouwd die echt door mensen gebruikt wordt", tags: ["se"] },
+      { text: "Ik heb een eigen product of startup gelanceerd", tags: ["id"] },
+      { text: "Ik help bedrijven groeien met data en digitale strategie", tags: ["bdm"] },
+      { text: "Ik bescherm kritieke systemen tegen cyberdreigingen", tags: ["ism"] },
+      { text: "Ik beheer de IT-infrastructuur van een grote organisatie", tags: ["nse"] }
+    ]
+  }
+];
+
+const tracks = {
+  se: {
+    code: "SE",
+    label: "Software Engineering",
+    location: "Locatie: Den Haag",
+    desc: "Je bouwt van A tot Z softwareapplicaties — van mobiele apps tot webplatformen. Programmeren, software-architectuur en agile werken staan centraal.",
+    color: "#1a6dc5",
+    bg: "#deeaf9",
+    textColor: "#0a3d6b",
+    barColor: "#1a6dc5",
+    skills: ["Java / Python", "Web development", "Agile/Scrum", "Software-architectuur"]
+  },
+  id: {
+    code: "ID",
+    label: "Innovative Development",
+    location: "Locatie: Zoetermeer",
+    desc: "Je combineert techniek met creativiteit en ondernemerschap. Je bedenkt en bouwt innovatieve digitale producten en diensten, van idee tot prototype.",
+    color: "#c17d10",
+    bg: "#fef0d6",
+    textColor: "#7a4200",
+    barColor: "#c17d10",
+    skills: ["Design thinking", "Prototyping", "Ondernemerschap", "UX & innovatie"]
+  },
+  bdm: {
+    code: "BDM",
+    label: "Business & Data Management",
+    location: "Locatie: Den Haag",
+    desc: "Je verbindt ICT met bedrijfskunde. Je analyseert data, optimaliseert processen en helpt organisaties slimmer werken met digitale technologie.",
+    color: "#217a3c",
+    bg: "#e2f4e8",
+    textColor: "#145226",
+    barColor: "#217a3c",
+    skills: ["Data-analyse", "SQL / Power BI", "Business processen", "IT-management"]
+  },
+  ism: {
+    code: "ISM",
+    label: "Information Security Management",
+    location: "Locatie: Zoetermeer",
+    desc: "Je bent de digitale bewaker. Je leert systemen ethisch te hacken, kwetsbaarheden op te sporen en beveiligingsbeleid te ontwerpen voor organisaties.",
+    color: "#c0392b",
+    bg: "#fde8e6",
+    textColor: "#7b1f1a",
+    barColor: "#c0392b",
+    skills: ["Ethical hacking", "Risicoanalyse", "Netwerkbeveiliging", "Forensics"]
+  },
+  nse: {
+    code: "NSE",
+    label: "Network & Systems Engineering",
+    location: "Locatie: Delft",
+    desc: "Je bouwt en beheert de technische ruggengraat van organisaties — netwerken, servers, cloudplatformen en embedded systemen.",
+    color: "#6b3fcb",
+    bg: "#ece5fb",
+    textColor: "#3d2080",
+    barColor: "#6b3fcb",
+    skills: ["Networking (Cisco)", "Linux / Windows Server", "Cloud (AWS/Azure)", "Systeembeheer"]
+  }
+};
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let studentFirstName = '';
+let studentLastName = '';
+
+function render() {
+  const app = document.getElementById('app');
+  if (!studentFirstName) {
+    renderNameScreen(app);
+  } else if (current < questions.length) {
+    renderQuestion(app);
+  } else {
+    renderResult(app);
+  }
+}
+
+function renderNameScreen(app) {
+  app.innerHTML = `
+    <div class="name-wrap">
+      <h2>Welkom bij de HBO-ICT Studiekeuze Quiz</h2>
+      <p>Vul eerst je naam in. Deze wordt gebruikt op jouw persoonlijk rapport dat je na afloop kunt downloaden.</p>
+      <div class="name-row">
+        <div class="name-field">
+          <label for="firstName">Voornaam</label>
+          <input type="text" id="firstName" placeholder="bijv. Emma" autocomplete="given-name" />
+          <span class="field-error" id="firstNameError"></span>
+        </div>
+        <div class="name-field">
+          <label for="lastName">Achternaam</label>
+          <input type="text" id="lastName" placeholder="bijv. de Vries" autocomplete="family-name" />
+          <span class="field-error" id="lastNameError"></span>
+        </div>
+      </div>
+      <div class="nav-row" style="border-top:none; padding-top:0; margin-top:0;">
+        <span></span>
+        <button class="btn primary" onclick="submitName()">Start quiz &#8594;</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('firstName').focus();
+  document.getElementById('firstName').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('lastName').focus();
+  });
+  document.getElementById('lastName').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') submitName();
+  });
+}
+
+function submitName() {
+  const first = document.getElementById('firstName').value.trim();
+  const last = document.getElementById('lastName').value.trim();
+  let valid = true;
+
+  document.getElementById('firstNameError').textContent = '';
+  document.getElementById('lastNameError').textContent = '';
+  document.getElementById('firstName').classList.remove('input-error');
+  document.getElementById('lastName').classList.remove('input-error');
+
+  if (!first) {
+    document.getElementById('firstNameError').textContent = 'Vul je voornaam in.';
+    document.getElementById('firstName').classList.add('input-error');
+    valid = false;
+  }
+  if (!last) {
+    document.getElementById('lastNameError').textContent = 'Vul je achternaam in.';
+    document.getElementById('lastName').classList.add('input-error');
+    valid = false;
+  }
+
+  if (!valid) return;
+
+  studentFirstName = first;
+  studentLastName = last;
+  render();
+}
+
+function renderQuestion(app) {
+  const q = questions[current];
+  const letters = ['A','B','C','D','E'];
+  const pct = Math.round((current / questions.length) * 100);
+  app.innerHTML = `
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span>Vraag ${current + 1} van ${questions.length}</span>
+        <span>${pct}%</span>
+      </div>
+      <div class="progress-bg"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>
+    <div class="question-body">
+      <div class="q-text">${q.text}</div>
+      <div class="options">
+        ${q.options.map((o, i) => `
+          <button class="option-btn ${answers[current] === i ? 'selected' : ''}" onclick="selectOption(${i})">
+            <span class="option-letter">${letters[i]}</span>
+            <span>${o.text}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="nav-row">
+        <button class="btn" onclick="go(-1)" ${current === 0 ? 'disabled' : ''}>&#8592; Terug</button>
+        <button class="btn primary" onclick="go(1)" ${answers[current] === null ? 'disabled' : ''}>
+          ${current === questions.length - 1 ? 'Bekijk resultaat &#8594;' : 'Volgende &#8594;'}
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function selectOption(i) {
+  answers[current] = i;
+  render();
+}
+
+function go(dir) {
+  current = Math.max(0, Math.min(questions.length, current + dir));
+  render();
+}
+
+function calcScores() {
+  const scores = { se: 0, id: 0, bdm: 0, ism: 0, nse: 0 };
+  questions.forEach((q, qi) => {
+    const ai = answers[qi];
+    if (ai === null) return;
+    q.options[ai].tags.forEach(t => { scores[t] += 1; });
+  });
+  const total = Object.values(scores).reduce((a, b) => a + b, 0) || 1;
+  return { scores, total };
+}
+
+function renderResult(app) {
+  const { scores, total } = calcScores();
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const top = sorted[0][0];
+  const t = tracks[top];
+
+  const cardsHTML = sorted.map(([key, score], idx) => {
+    const tr = tracks[key];
+    const pct = Math.round((score / total) * 100);
+    const isTop = idx === 0;
+    return `
+      <div class="result-card ${isTop ? 'top' : ''}" style="${isTop ? 'border-color:' + tr.barColor : ''}">
+        ${isTop ? '<span class="best-badge" style="background:' + tr.bg + ';color:' + tr.textColor + '">Beste match</span>' : ''}
+        <div class="result-card-top-row">
+          <div style="display:flex;align-items:center;">
+            <span class="result-track-name">${tr.label}</span>
+            <span class="result-track-code" style="background:${tr.bg};color:${tr.textColor}">${tr.code}</span>
+          </div>
+          <span class="result-pct" style="color:${tr.barColor}">${pct}%</span>
+        </div>
+        <div class="result-bar-bg">
+          <div class="result-bar" id="bar-${key}" style="background:${tr.barColor}"></div>
+        </div>
+        <div class="location-tag">${tr.location}</div>
+        ${isTop ? `
+          <div class="result-desc" style="margin-top:8px;">${tr.desc}</div>
+          <div class="skills-row">
+            ${tr.skills.map(s => '<span class="skill-badge" style="background:' + tr.bg + ';color:' + tr.textColor + '">' + s + '</span>').join('')}
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="result-wrap">
+      <div class="result-intro">Jouw resultaat — ${escHtml(studentFirstName)} ${escHtml(studentLastName)}</div>
+      <div class="result-headline">Je past het best bij <span>${t.label} (${t.code})</span></div>
+      ${cardsHTML}
+      <button class="download-btn" onclick="downloadRapport()">
+        &#8659; Download jouw rapport (PDF)
+      </button>
+      <button class="restart-btn" onclick="restart()">&#8635; Opnieuw beginnen</button>
+      <a class="haagse-link" href="https://www.dehaagsehogeschool.nl/opleidingen/hbo-bachelor/hbo-ict" target="_blank" rel="noopener">
+        Meer info over HBO-ICT op De Haagse Hogeschool &#8594;
+      </a>
+    </div>
+  `;
+
+  setTimeout(() => {
+    sorted.forEach(([key, score]) => {
+      const pct = Math.round((score / total) * 100);
+      const bar = document.getElementById('bar-' + key);
+      if (bar) bar.style.width = pct + '%';
+    });
+  }, 80);
+}
+
+function downloadRapport() {
+  const { scores, total } = calcScores();
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const topKey = sorted[0][0];
+  const top = tracks[topKey];
+
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('nl-NL', { day: '2-digit', month: 'long', year: 'numeric' });
+
+  const scoresRowsHTML = sorted.map(([key, score], idx) => {
+    const tr = tracks[key];
+    const pct = Math.round((score / total) * 100);
+    const isTop = idx === 0;
+    return `
+      <tr${isTop ? ' style="font-weight:600;"' : ''}>
+        <td>
+          <span class="rp-code-badge" style="background:${tr.bg};color:${tr.textColor}">${tr.code}</span>
+          ${tr.label}${isTop ? ' &#9733;' : ''}
+        </td>
+        <td style="color:${tr.barColor};font-weight:600;">${pct}%</td>
+        <td>
+          <div class="rp-bar-bg">
+            <div class="rp-bar-fill" style="width:${pct}%;background:${tr.barColor}"></div>
+          </div>
+        </td>
+        <td style="font-size:11px;color:#6b7a99;">${tr.location.replace('Locatie: ', '')}</td>
+      </tr>
+    `;
+  }).join('');
+
+  const answersRowsHTML = questions.map((q, qi) => {
+    const ai = answers[qi];
+    const chosenText = ai !== null ? q.options[ai].text : '—';
+    const tag = ai !== null ? q.options[ai].tags[0] : '';
+    const tr = tag ? tracks[tag] : null;
+    return `
+      <tr>
+        <td style="color:#6b7a99;width:32px;">${qi + 1}</td>
+        <td>${q.text}</td>
+        <td>${chosenText}</td>
+        <td style="width:50px;">
+          ${tr ? '<span class="rp-code-badge" style="background:' + tr.bg + ';color:' + tr.textColor + '">' + tr.code + '</span>' : ''}
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  document.getElementById('rapport-page').innerHTML = `
+    <div class="rp-header">
+      <div class="rp-header-left">
+        <h1>HBO-ICT Studiekeuze Rapport</h1>
+        <p>De Haagse Hogeschool &bull; HBO-ICT</p>
+      </div>
+      <div class="rp-header-right">
+        ali@rashidi.nl
+      </div>
+    </div>
+
+    <div class="rp-student-box">
+      <div class="rp-field">
+        <label>Naam</label>
+        <span>${escHtml(studentFirstName)} ${escHtml(studentLastName)}</span>
+      </div>
+      <div class="rp-field">
+        <label>Datum</label>
+        <span>${dateStr}</span>
+      </div>
+      <div class="rp-field">
+        <label>Beste match</label>
+        <span style="color:${top.color}">${top.code} &mdash; ${top.label}</span>
+      </div>
+    </div>
+
+    <div class="rp-section-title">Beste match</div>
+    <div class="rp-best-box" style="background:${top.color}">
+      <div class="rp-best-eyebrow">&#10024; Beste Match &bull; ${top.code}</div>
+      <div class="rp-best-title">${top.label}</div>
+      <div class="rp-best-desc">${top.desc}</div>
+      <div class="rp-best-meta">&#128205; ${top.location}</div>
+      <div class="rp-skills-row">
+        ${top.skills.map(s => '<span class="rp-skill-badge">' + s + '</span>').join('')}
+      </div>
+    </div>
+
+    <div class="rp-section-title">Jouw profiel &mdash; alle richtingen</div>
+    <table class="rp-scores-table">
+      <thead>
+        <tr>
+          <th>Richting</th>
+          <th>Score</th>
+          <th>Balk</th>
+          <th>Locatie</th>
+        </tr>
+      </thead>
+      <tbody>${scoresRowsHTML}</tbody>
+    </table>
+
+    <div class="rp-answers-section">
+      <div class="rp-section-title">Overzicht antwoorden</div>
+      <table class="rp-answers-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Vraag</th>
+            <th>Jouw antwoord</th>
+            <th>Richting</th>
+          </tr>
+        </thead>
+        <tbody>${answersRowsHTML}</tbody>
+      </table>
+    </div>
+
+    <div class="rp-footer">
+      <span>HBO-ICT Studiekeuze Quiz &bull; De Haagse Hogeschool</span>
+      <span>${escHtml(studentFirstName)} ${escHtml(studentLastName)} &bull; ${dateStr}</span>
+    </div>
+  `;
+
+  window.print();
+}
+
+function restart() {
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  studentFirstName = '';
+  studentLastName = '';
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
